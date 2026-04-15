@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "Seshlinkr",
+    "slug": "seshlinkr",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/Seshlinkr_logo_app_icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tile983.Seshlinkr",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "129.12.147.93": {
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+              "NSTemporaryExceptionMinimumTLSVersion": "TLSv1.2"
+            }
+          }
+        }
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/Seshlinkr_logo_app_icon.png",
+        "backgroundColor": "#F1F1EF"
+      },
+      "package": "com.tile983.Seshlinkr"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/Seshlinkr_logo_app_icon.png"
+    },
+    "splash": {
+      "image": "./assets/images/Seshlinkr_logo_purple_transparent.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F1F1EF",
+      "dark": {
+        "image": "./assets/images/Seshlinkr_logo_purple_transparent.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#0B1B35"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/Seshlinkr_logo_purple_transparent.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#F1F1EF"
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "836beabb-d447-4998-a60b-809eb2bc0ad7"
+      }
+    },
+    "owner": "tile983"
+  }
+}
