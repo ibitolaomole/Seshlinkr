@@ -55,7 +55,8 @@
           "backgroundColor": "#F1F1EF"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
@@ -65,9 +66,13 @@
         "origin": false
       },
       "eas": {
-        "projectId": "836beabb-d447-4998-a60b-809eb2bc0ad7"
+        "projectId": "6041d074-0684-4a52-8851-acbd1d80ee0c"
       }
     },
-    "owner": "tile983"
+    "owner": "tile983",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/6041d074-0684-4a52-8851-acbd1d80ee0c"
+    }
   }
 }

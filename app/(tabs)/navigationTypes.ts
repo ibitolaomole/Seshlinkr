@@ -9,5 +9,6 @@ export type RootStackParamList = {
   setPassword: undefined;
   customiseProfile: undefined;
   homescreen: undefined;
+  App: undefined; // Added for post-sign-in navigation
   // Add other screens here as needed
 };

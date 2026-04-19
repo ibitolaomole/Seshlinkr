@@ -3,7 +3,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Network from 'expo-network';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -15,7 +15,8 @@ import {
   View
 } from 'react-native';
 import { fetchChatMessages } from '../../api';
-import { RootStackParamList } from './navigationTypes';
+import { signInWithGoogle, useGoogleAuth } from '../../auth';
+import { RootStackParamList } from '../../types/navigation';
 
 const chatStyles = StyleSheet.create({
   chatBubble: {
@@ -115,16 +116,16 @@ const chatStyles = StyleSheet.create({
 });
 
 const chatMessages = [
-  "Movie night at Eliot Building today, free snacks and drinks! 🍿🥤",
-  "anyone else in 2nd year economics doing a revision all-nighter tonight?",
-  "The blonde girl working in co op every morning this week is so hot man",
-  "had so many silent study eye contact ships recently, just not brave enough to speak to them",
-  "Pizza and Smash Bros at 5 today at Kennedy Seminar Room 3. Just show up. 🍕",
-  "To the guy in parkwood screaming at his game it can't be that serious",
-  "Congrats to the guy that mashed up the camera guy outside McDs, he needed it.",
-  "To the guy in the black volkswagen with a certain flag on the roof - I AGREE WITH YOU + YOU SHOULD MARRY ME",
-  "wat is wrong with mungos's staff - why is they always grumpy and rude to us like wat did we do to them?!?!",
-  "Griffin really was the main character of campus. RIP, legend 💛"
+  "Movie night at Eliot Building today — free snacks and drinks, think it starts around 7 🍿",
+  "anyone else doing a 2nd year econ all-nighter in the library tonight or just me lol",
+  "there’s a Smash Bros + pizza thing in Kennedy Seminar Room 3 at 5… I’m definitely going",
+  "Co-op worker in the mornings is there again, I keep seeing her every day now",
+  "silent study in Templeman is actually mad focused today, everyone’s locked in",
+  "Parkwood courts are packed right now, games going on if anyone’s trying to play",
+  "open mic at Woody’s tonight apparently — might actually go this time",
+  "McDonald’s after lectures is becoming a routine at this point ngl",
+  "there’s some car meet near campus later, saw a few people talking about it",
+  "someone said there’s a little memorial thing at Griffin today, people are heading over"
 ];
 
 
@@ -168,7 +169,10 @@ export default function HomeScreen() {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(true);
+  const [googleSignInLoading, setGoogleSignInLoading] = useState<boolean>(false);
   const messageIndex = useRef<number>(0);
+  
+  const { googleRequest, googleResponse, googlePromptAsync } = useGoogleAuth();
 
   const typingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -644,7 +648,23 @@ export default function HomeScreen() {
               { width: '100%' }, // full-width inside card
               colorScheme !== 'dark' && styles.buttonShadow
             ]}
-            onPressIn={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+            onPress={async () => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              if (googleSignInLoading) return;
+              
+              try {
+                setGoogleSignInLoading(true);
+                await signInWithGoogle(googlePromptAsync);
+                // Navigate to profile customization after successful sign-in
+                navigation.navigate('customiseProfile' as never);
+              } catch (error: any) {
+                console.error('Sign-in failed:', error.message);
+                alert('Sign-in failed: ' + error.message);
+              } finally {
+                setGoogleSignInLoading(false);
+              }
+            }}
+            disabled={googleSignInLoading}
             activeOpacity={0.8}
             accessibilityRole="button"
             accessibilityLabel="Continue with Google"
@@ -658,7 +678,7 @@ export default function HomeScreen() {
               styles.buttonGoogleText,
               { color: colorScheme === 'dark' ? 'white' : 'black' } // Updated text color for dark mode
             ]}>
-              Continue with Google
+              {googleSignInLoading ? 'Signing in...' : 'Continue with Google'}
             </Text>
           </TouchableOpacity>
 
